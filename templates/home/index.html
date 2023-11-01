@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center flex-column gap-2 vh-100" style="background: wheat">
+        <div class="card text-center p-4 mb-4" style="background: lightgoldenrodyellow">
+            <p>Your Point</p>
+            <h3>200</h3>
+        </div>
+        <div class="card text-center w-75" style="background: lightyellow">
+            <div class="card-body">
+                <h5 class="card-title">{{ question }}</h5>
+                <form method="get" action="">
+                    <input type="hidden" name="question_id" value="1">
+                    <div class="mb-3">
+                        {% for id, option in options %}
+                            <input type="radio" name="answer" value="{{ id }}" id="{{ id }}">
+                            <label for="{{ id }}">{{ option }}</label><br>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <form method="get" action="">
+                    <input type="hidden" name="question_id" value="1">
+                    <input type="hidden" name="answer" value="-1">
+                    <button type="submit" class="btn btn-secondary">Skip</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
