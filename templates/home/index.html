@@ -9,22 +9,26 @@
         </div>
         <div class="card text-center w-75" style="background: lightyellow">
             <div class="card-body">
-                <h5 class="card-title">{{ question }}</h5>
-                <form method="get" action="">
-                    <input type="hidden" name="question_id" value="1">
+                {% if answer %}
+                <h5 class="card-title">{{ question.question_text }}</h5>
+                <form method="post" action="/answer">
+                    <input type="hidden" name="answer_id" value="{{ answer }}">
                     <div class="mb-3">
-                        {% for id, option in options %}
-                            <input type="radio" name="answer" value="{{ id }}" id="{{ id }}">
-                            <label for="{{ id }}">{{ option }}</label><br>
+                        {% for option in question.options %}
+                            <input type="radio" name="answer" value="{{ forloop.counter0 }}" id="{{ forloop.counter0 }}">
+                            <label for="{{ forloop.counter0 }}">{{ option }}</label><br>
                         {% endfor %}
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                <form method="get" action="">
-                    <input type="hidden" name="question_id" value="1">
+                <form method="post" action="/answer">
+                    <input type="hidden" name="answer_id" value="{{ answer }}">
                     <input type="hidden" name="answer" value="-1">
                     <button type="submit" class="btn btn-secondary">Skip</button>
                 </form>
+                {% else %}
+                    <h4>No more questions for you</h4>
+                {% endif %}
             </div>
         </div>
     </div>

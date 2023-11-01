@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
+
+    'home'
 ]
 
 MIDDLEWARE = [
