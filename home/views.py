@@ -12,7 +12,7 @@ def index(request):
     # get the user's question config
     config, _ = UserConfig.objects.get_or_create(user=request.user)
 
-    is_self = random.choice([True])
+    is_self = random.choice([False])
 
     question, answer = None, None
 
@@ -30,7 +30,7 @@ def index(request):
         return render(request, 'home/index.html', context={"points": config.points})
 
     question = answer.question
-    name = "your" if is_self else answer.user.username
+    name = "your" if is_self else answer.user.first_name + " " + answer.user.last_name + "'s"
 
     context = {
         "question": question.question_text.replace("%USER%", name),
@@ -51,7 +51,7 @@ def answer_view(request):
     answer_value = int(request.POST.get('answer'))
     is_self = answer.user == request.user
 
-    if answer_value < 0 or answer_value > 3:
+    if (answer_value < 0 or answer_value > 3) and is_self:
         return redirect('home')
 
     # get the user's question config
