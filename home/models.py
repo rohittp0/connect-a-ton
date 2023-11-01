@@ -11,16 +11,20 @@ class Question(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer_value = models.IntegerField()
-    actual_answer = models.IntegerField()
-    user_owner = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user_owner')
+    answer = models.IntegerField()
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user')
 
 
-class QuestionConfig(models.Model):
+class UserAnswer(models.Model):
+    answer_value = models.IntegerField()
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    question_config = models.ForeignKey('UserConfig', on_delete=models.CASCADE)
+
+
+class UserConfig(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     self_questions = models.ManyToManyField(Question, related_name='self_answers')
-    other_answers = models.ManyToManyField(Answer, related_name='other_answers')
+    other_answers = models.ManyToManyField(Answer, related_name='other_answers', through='UserAnswer')
 
     points = models.IntegerField(default=0)
 

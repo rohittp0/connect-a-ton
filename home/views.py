@@ -3,13 +3,13 @@ import random
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
-from home.models import QuestionConfig, Question, Answer
+from home.models import UserConfig, Question, Answer, UserAnswer
 
 
 @login_required
 def index(request):
     # get the user's question config
-    config, _ = QuestionConfig.objects.get_or_create(user=request.user)
+    config, _ = UserConfig.objects.get_or_create(user=request.user)
 
     is_self = random.choice([True])
 
@@ -41,16 +41,34 @@ def index(request):
 
 
 @login_required
-def answer(request):
+def answer_view(request):
     if request.method != "POST":
         return redirect('home')
 
     answer = get_object_or_404(Answer, id=request.POST.get('answer_id'))
     answer_value = request.POST.get('answer')
-    actual_answer = answer.actual_answer
+    is_self = answer.user == request.user
 
     if not answer_value:
         return redirect('home')
 
+    if is_self:
+        answer.actual_answer = answer_value
+        answer.save()
+        return redirect('home')
 
+    # get the user's question config
+    config = get_object_or_404(UserConfig, user=request.user)
+
+    UserAnswer.objects.create(
+        answer_value=answer_value,
+        answer=answer,
+        question_config=config,
+    )
+
+    if int(answer_value) == answer.actual_answer:
+        config.points += 1
+        config.save()
+
+    return redirect('home')
 
