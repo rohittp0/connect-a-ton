@@ -13,7 +13,8 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_value = models.IntegerField()
     actual_answer = models.IntegerField()
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user_owner = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user_owner')
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user')
 
 
 class QuestionConfig(models.Model):

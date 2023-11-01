@@ -12,11 +12,12 @@
                 {% if answer %}
                     <h5 class="card-title">{{ question }}</h5>
                     <form method="post" action="/answer">
+                        {% csrf_token %}
                         <input type="hidden" name="answer_id" value="{{ answer }}">
                         <div class="mb-3">
                             {% for option in options %}
                                 <input type="radio" name="answer" value="{{ forloop.counter0 }}"
-                                       id="{{ forloop.counter0 }}">
+                                       id="{{ forloop.counter0 }}" required>
                                 <label for="{{ forloop.counter0 }}">{{ option }}</label><br>
                             {% endfor %}
                         </div>
@@ -24,6 +25,7 @@
                     </form>
                     {% if not is_self %}
                         <form method="post" action="/answer">
+                            {% csrf_token %}
                             <input type="hidden" name="answer_id" value="{{ answer }}">
                             <input type="hidden" name="answer" value="-1">
                             <button type="submit" class="btn btn-secondary">Skip</button>

@@ -1,7 +1,7 @@
 import random
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from home.models import QuestionConfig, Question, Answer
 
@@ -38,3 +38,19 @@ def index(request):
         "is_self": is_self,
     }
     return render(request, 'home/index.html', context=context)
+
+
+@login_required
+def answer(request):
+    if request.method != "POST":
+        return redirect('home')
+
+    answer = get_object_or_404(Answer, id=request.POST.get('answer_id'))
+    answer_value = request.POST.get('answer')
+    actual_answer = answer.actual_answer
+
+    if not answer_value:
+        return redirect('home')
+
+
+
