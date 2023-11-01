@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from home.models import UserConfig, Question, Answer, UserAnswer
@@ -19,14 +20,14 @@ def index(request):
         question = Question.objects.exclude(id__in=config.self_questions.all()).first()
 
     if question:
-        answer, _ = Answer.objects.get_or_create(question=question, user=request.user, actual_answer=-8,
-                                                 answer_value=-1)
+        answer, _ = Answer.objects.get_or_create(question=question, user=request.user)
     else:
         is_self = False
-        answer = Answer.objects.exclude(id__in=config.other_answers.all()).exclude(user=request.user).first()
+        answer = Answer.objects.exclude(
+            Q(id__in=config.other_answers.all()) | Q(user=request.user) | Q(answer=None)).first()
 
     if answer is None:
-        return render(request, 'home/index.html')
+        return render(request, 'home/index.html', context={"points": config.points})
 
     question = answer.question
     name = "your" if is_self else answer.user.username
@@ -36,6 +37,7 @@ def index(request):
         "options": question.options,
         "answer": answer.id,
         "is_self": is_self,
+        "points": config.points,
     }
     return render(request, 'home/index.html', context=context)
 
@@ -46,19 +48,21 @@ def answer_view(request):
         return redirect('home')
 
     answer = get_object_or_404(Answer, id=request.POST.get('answer_id'))
-    answer_value = request.POST.get('answer')
+    answer_value = int(request.POST.get('answer'))
     is_self = answer.user == request.user
 
-    if not answer_value:
-        return redirect('home')
-
-    if is_self:
-        answer.actual_answer = answer_value
-        answer.save()
+    if answer_value < 0 or answer_value > 3:
         return redirect('home')
 
     # get the user's question config
     config = get_object_or_404(UserConfig, user=request.user)
+
+    if is_self:
+        answer.answer = answer_value
+        answer.save()
+        config.self_questions.add(answer.question)
+
+        return redirect('home')
 
     UserAnswer.objects.create(
         answer_value=answer_value,
@@ -66,9 +70,8 @@ def answer_view(request):
         question_config=config,
     )
 
-    if int(answer_value) == answer.actual_answer:
-        config.points += 1
+    if int(answer_value) == answer.answer:
+        config.points += 5
         config.save()
 
     return redirect('home')
-

@@ -4,14 +4,14 @@
 {% block content %}
     <div class="d-flex justify-content-center align-items-center flex-column gap-2 vh-100" style="background: wheat">
         <div class="card text-center p-4 mb-4" style="background: lightgoldenrodyellow">
-            <p>Your Point</p>
-            <h3>200</h3>
+            <p>Your Points</p>
+            <h3>{{ points }}</h3>
         </div>
         <div class="card text-center w-75" style="background: lightyellow">
             <div class="card-body">
                 {% if answer %}
                     <h5 class="card-title">{{ question }}</h5>
-                    <form method="post" action="/answer">
+                    <form method="post" action="/answer/">
                         {% csrf_token %}
                         <input type="hidden" name="answer_id" value="{{ answer }}">
                         <div class="mb-3">
@@ -24,7 +24,7 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                     {% if not is_self %}
-                        <form method="post" action="/answer">
+                        <form method="post" action="/answer/">
                             {% csrf_token %}
                             <input type="hidden" name="answer_id" value="{{ answer }}">
                             <input type="hidden" name="answer" value="-1">

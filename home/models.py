@@ -11,7 +11,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.IntegerField()
+    answer = models.IntegerField(blank=True, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user')
 
 
