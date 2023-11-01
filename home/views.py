@@ -12,7 +12,7 @@ def index(request):
     # get the user's question config
     config, _ = UserConfig.objects.get_or_create(user=request.user)
 
-    is_self = random.choice([False])
+    is_self = random.choice([False, True])
 
     question, answer = None, None
 
