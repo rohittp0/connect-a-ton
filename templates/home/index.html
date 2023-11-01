@@ -10,24 +10,28 @@
         <div class="card text-center w-75" style="background: lightyellow">
             <div class="card-body">
                 {% if answer %}
-                <h5 class="card-title">{{ question.question_text }}</h5>
-                <form method="post" action="/answer">
-                    <input type="hidden" name="answer_id" value="{{ answer }}">
-                    <div class="mb-3">
-                        {% for option in question.options %}
-                            <input type="radio" name="answer" value="{{ forloop.counter0 }}" id="{{ forloop.counter0 }}">
-                            <label for="{{ forloop.counter0 }}">{{ option }}</label><br>
-                        {% endfor %}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <form method="post" action="/answer">
-                    <input type="hidden" name="answer_id" value="{{ answer }}">
-                    <input type="hidden" name="answer" value="-1">
-                    <button type="submit" class="btn btn-secondary">Skip</button>
-                </form>
+                    <h5 class="card-title">{{ question }}</h5>
+                    <form method="post" action="/answer">
+                        <input type="hidden" name="answer_id" value="{{ answer }}">
+                        <div class="mb-3">
+                            {% for option in options %}
+                                <input type="radio" name="answer" value="{{ forloop.counter0 }}"
+                                       id="{{ forloop.counter0 }}">
+                                <label for="{{ forloop.counter0 }}">{{ option }}</label><br>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    {% if not is_self %}
+                        <form method="post" action="/answer">
+                            <input type="hidden" name="answer_id" value="{{ answer }}">
+                            <input type="hidden" name="answer" value="-1">
+                            <button type="submit" class="btn btn-secondary">Skip</button>
+                        </form>
+                    {% endif %}
                 {% else %}
-                    <h4>No more questions for you</h4>
+                    <h4>No more questions for you at the moment</h4>
+                    <small>Refresh like you are crazy, you might get something</small>
                 {% endif %}
             </div>
         </div>
