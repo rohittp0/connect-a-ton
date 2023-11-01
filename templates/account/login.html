@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card text-center">
+            <div class="card-body">
+                <img src="{% static 'logo.webp' %}" class="rounded-circle mb-3" width="100" alt="Logo">
+                <h2 class="m-2 mb-5">Connect-A-Ton</h2>
+                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info">
+                    <i class="fab fa-google"></i> Login with Google
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
