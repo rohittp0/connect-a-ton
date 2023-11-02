@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/swags.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="vh-100" style="background: #f3f1ff">
+        <h1 class="text-center p-3" style="background: #f4f4f4">🔥&nbsp;&nbsp;SWAGS&nbsp;&nbsp;🔥</h1>
+        <div class="main-grid">
+            {% for swag in swags %}
+                <div class="card">
+                    {% if not swag.unlocked %}
+                        <div class="overlay">
+                            <i class="fa-solid fa-lock" style="font-size: xxx-large; color: #eaaf20"></i>
+                            {% if swag.points %}
+                                <p class="overlay__text">{{ swag.points }} Points</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <img src="{{ swag.image }}" class="card-img-top" alt="Swag Image">
+                    <div class="card-body pt-1">
+                        <p class="card-text font-weight-lighter">{{ swag.description }}</p>
+                        {% if swag.delivered %}
+                            <small>Delivered <i class="fa-solid fa-check" style="color: #4ad737;"></i></small>
+                        {% else %}
+                            <small>Not Delivered <i class="fa-solid fa-times" style="color: #d73737;"></i></small>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock %}

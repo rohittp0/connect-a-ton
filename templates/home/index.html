@@ -11,7 +11,7 @@
             <p class="fs-4 text-muted">Your Points</p>
             <h1 class="display-4">{{ points }}</h1>
         </div>
-        <div class="cards-pile">
+        <div class="cards-pile mb-4">
             {% if answer %}
                 <h5 class="card-title mb-3">{{ question }}</h5>
                 <form method="post" action="/answer/" class="p-2">
@@ -44,6 +44,9 @@
                 <small class="text-muted">Refresh like you are crazy, you might get something</small>
             {% endif %}
         </div>
+    <div class="d-flex justify-content-center mt-4">
+        <button class="btn btn-outline-primary mx-2" onclick="window.location.href='/swags/'">Swags</button>
+        <button class="btn btn-outline-primary mx-2" onclick="window.location.reload()">Refresh</button>
     </div>
 {% endblock content %}
 
