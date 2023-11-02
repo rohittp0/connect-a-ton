@@ -30,7 +30,7 @@ def index(request):
         return render(request, 'home/index.html', context={"points": config.points})
 
     question = answer.question
-    name = "your" if is_self else answer.user.first_name + " " + answer.user.last_name + "'s"
+    name = "you" if is_self else answer.user.first_name + " " + answer.user.last_name
 
     context = {
         "question": question.question_text.replace("%USER%", name),
