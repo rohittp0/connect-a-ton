@@ -9,19 +9,21 @@
     <div class="vh-100" style="background: #f3f1ff">
         <h1 class="text-center p-3" style="background: #f4f4f4">🔥&nbsp;&nbsp;SWAGS&nbsp;&nbsp;🔥</h1>
         <div class="main-grid">
-            {% for swag in swags %}
-                <div class="card" style="height: 250px">
-                    {% if not swag.unlocked %}
-                        <div class="overlay">
-                            <i class="fa-solid fa-lock" style="font-size: xxx-large; color: #eaaf20"></i>
-                            {% if swag.points %}
-                                <p class="overlay__text">{{ swag.points }} Points</p>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                    <img src="{{ swag.image.url }}" class="card-img-top card__image" alt="Swag Image">
-                    <p class="card__text">{{ swag.description }}</p>
-                </div>
+            {% for swags, type in swag_types %}
+                {% for swag in swags %}
+                    <div class="card" style="height: 250px">
+                        {% if type == "locked" %}
+                            <div class="overlay">
+                                <i class="fa-solid fa-lock" style="font-size: xxx-large; color: #eaaf20"></i>
+                                {% if swag.points %}
+                                    <p class="overlay__text">{{ swag.points }} Points</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <img src="{{ swag.image.url }}" class="card-img-top card__image" alt="Swag Image">
+                        <p class="card__text">{{ swag.description }}</p>
+                    </div>
+                {% endfor %}
             {% endfor %}
         </div>
     </div>
