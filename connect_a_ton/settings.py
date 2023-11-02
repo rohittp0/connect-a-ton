@@ -30,6 +30,8 @@ SESSION_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +44,6 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
-
-    'jazzmin',
 
     'home'
 ]
