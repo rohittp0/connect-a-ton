@@ -18,6 +18,7 @@ SECRET_KEY = os.getenv("DJANGO_KEY", "please set a key in .env")
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = ["localhost", "connect.makeaton.in"]
+CSRF_TRUSTED_ORIGINS = ['connect.makeaton.in', 'localhost']
 
 # Application definition
 
@@ -34,6 +35,8 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
+
+    'jazzmin',
 
     'home'
 ]
