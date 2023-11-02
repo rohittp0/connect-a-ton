@@ -137,12 +137,12 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = 'var/www/static'
+STATIC_ROOT = BASE_DIR / 'static' if DEBUG else '/var/www/static'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media' if DEBUG else '/var/www/media'
 
 # Default primary key field type
