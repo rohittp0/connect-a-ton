@@ -18,7 +18,11 @@ SECRET_KEY = os.getenv("DJANGO_KEY", "please set a key in .env")
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = ["localhost", "connect.makeaton.in"]
-CSRF_TRUSTED_ORIGINS = ['connect.makeaton.in', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['https://connect.makeaton.in', 'http://localhost']
+
+# CORS settings
+CORS_ORIGIN_WHITELIST = CSRF_TRUSTED_ORIGINS
+CORS_ORIGIN_ALLOW_ALL = False
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
