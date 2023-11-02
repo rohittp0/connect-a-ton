@@ -10,7 +10,7 @@
         <h1 class="text-center p-3" style="background: #f4f4f4">🔥&nbsp;&nbsp;SWAGS&nbsp;&nbsp;🔥</h1>
         <div class="main-grid">
             {% for swag in swags %}
-                <div class="card">
+                <div class="card" style="height: 250px">
                     {% if not swag.unlocked %}
                         <div class="overlay">
                             <i class="fa-solid fa-lock" style="font-size: xxx-large; color: #eaaf20"></i>
@@ -19,15 +19,8 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    <img src="{{ swag.image }}" class="card-img-top" alt="Swag Image">
-                    <div class="card-body pt-1">
-                        <p class="card-text font-weight-lighter">{{ swag.description }}</p>
-                        {% if swag.delivered %}
-                            <small>Delivered <i class="fa-solid fa-check" style="color: #4ad737;"></i></small>
-                        {% else %}
-                            <small>Not Delivered <i class="fa-solid fa-times" style="color: #d73737;"></i></small>
-                        {% endif %}
-                    </div>
+                    <img src="{{ swag.image.url }}" class="card-img-top card__image" alt="Swag Image">
+                    <p class="card__text">{{ swag.description }}</p>
                 </div>
             {% endfor %}
         </div>
