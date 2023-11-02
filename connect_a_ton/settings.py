@@ -20,6 +20,9 @@ DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 ALLOWED_HOSTS = ["localhost", "connect.makeaton.in"]
 CSRF_TRUSTED_ORIGINS = ['connect.makeaton.in', 'localhost']
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 # Application definition
 
 INSTALLED_APPS = [
