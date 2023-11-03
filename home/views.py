@@ -82,10 +82,14 @@ def answer_view(request):
 
 @login_required
 def check_in(request):
-    if request.user.has_perm('home.check_in'):
+    conf = UserConfig.objects.get(user=request.user)
+    if conf.checked_in:
         if request.GET.get('next'):
             return redirect(request.GET.get('next'))
 
         return redirect('home')
+
+    if request.user.is_staff:
+        return redirect('admin:index')
 
     return render(request, 'home/checkin.html')

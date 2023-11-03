@@ -9,12 +9,18 @@ class SwagAward(models.Model):
     def __str__(self):
         return self.swag.description + ' to ' + self.user.username
 
+    def save(self, *args, **kwargs):
+        self.swag.stock -= 1
+        self.swag.save()
+        super().save(*args, **kwargs)
+
 
 class Swag(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='swags', blank=True)
     points = models.IntegerField(blank=True, null=True)
     awarded = models.ManyToManyField('auth.User', through=SwagAward, related_name='awarded_swags')
+    stock = models.IntegerField(default=0)
 
     def __str__(self):
         return self.description

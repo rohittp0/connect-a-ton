@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 
 from connect_a_ton.utils import checkin_required
@@ -13,7 +13,7 @@ def swags(request):
     unlocked_swags = request.user.awarded_swags.all()
 
     # Unlock locked swags if user has enough points
-    unlockable_swags = Swag.objects.filter(points__lte=config.points).exclude(pk__in=unlocked_swags)
+    unlockable_swags = Swag.objects.filter(points__lte=config.points).filter(stock__gt=0).exclude(pk__in=unlocked_swags)
 
     for swag in unlockable_swags:
         SwagAward.objects.create(user=request.user, swag=swag)

@@ -11,4 +11,6 @@ def checkin_required():
         except UserConfig.DoesNotExist:
             return False
 
+
+
     return user_passes_test(is_checkin, login_url='checkin')
