@@ -42,6 +42,9 @@ class Answer(models.Model):
     answer = models.IntegerField(blank=True, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user')
 
+    def __str__(self):
+        return self.question.options[self.answer]
+
 
 class UserAnswer(models.Model):
     answer_value = models.IntegerField()

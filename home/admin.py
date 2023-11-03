@@ -13,6 +13,13 @@ class UserConfigAdmin(admin.ModelAdmin):
     readonly_fields = ('user',)
     exclude = ('other_answers', 'self_questions')
 
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.groups.filter(name='Registration Edit').exists():
+            return 'user', 'self_questions', 'other_answers'
+        elif request.user.groups.filter(name='Point Edit').exists():
+            return [field.name for field in obj._meta.fields if field.name != 'points']
+        return super().get_readonly_fields(request, obj)
+
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
@@ -22,5 +29,5 @@ class AnswerAdmin(admin.ModelAdmin):
 
 @admin.register(UserAnswer)
 class UserAnswerAdmin(admin.ModelAdmin):
-    list_display = ('answer', 'answer_value')
+    list_display = ('answer', 'answer_value', 'question_config')
     search_fields = ('answer__question__question_text', 'question_config__user__username')
