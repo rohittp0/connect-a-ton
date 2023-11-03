@@ -1,6 +1,6 @@
 import random
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -8,6 +8,7 @@ from home.models import UserConfig, Question, Answer, UserAnswer
 
 
 @login_required
+@permission_required('home.check_in', login_url='home:checkin')
 def index(request):
     # get the user's question config
     config, _ = UserConfig.objects.get_or_create(user=request.user)
@@ -43,6 +44,7 @@ def index(request):
 
 
 @login_required
+@permission_required('home.check_in', login_url='home:checkin')
 def answer_view(request):
     if request.method != "POST":
         return redirect('home')
@@ -75,3 +77,11 @@ def answer_view(request):
         config.save()
 
     return redirect('home')
+
+
+@login_required
+def check_in(request):
+    if request.user.has_perm('home.check_in'):
+        return redirect('home')
+
+    return render(request, 'home/checkin.html')

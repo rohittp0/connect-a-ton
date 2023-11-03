@@ -1,13 +1,14 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import render, get_object_or_404
 
 from home.models import UserConfig
 from swags.models import Swag, SwagAward
 
 
 @login_required
+@permission_required('home.check_in', login_url='home:checkin')
 def swags(request):
-    config, _ = UserConfig.objects.get_or_create(user=request.user)
+    config = get_object_or_404(UserConfig, user=request.user)
     unlocked_swags = request.user.awarded_swags.all()
 
     # Unlock locked swags if user has enough points

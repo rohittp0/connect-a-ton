@@ -1,8 +1,33 @@
+from django.contrib.auth.models import Permission
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
+from django.conf import settings
 
-# Create your models here.
+tshirt_sizes = (
+    ('xs', 'Extra Small'),
+    ('s', 'Small'),
+    ('m', 'Medium'),
+    ('l', 'Large'),
+    ('xl', 'Extra Large'),
+    ('xxl', 'Double XL'),
+    ('naked', 'Naked')
+)
+
+food_choices = (
+    ('veg', 'Vegetarian'),
+    ('non-veg', 'Non Vegetarian'),
+    ('starve', 'Starve')
+)
+
+gender_choices = (
+    ('male', 'Male'),
+    ('female', "Female"),
+    ('wm', 'Washing Machine'),
+)
+
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -28,5 +53,39 @@ class UserConfig(models.Model):
 
     points = models.IntegerField(default=0)
 
+    name = models.CharField(max_length=100, null=True)
+    course = models.CharField(max_length=100, null=True)
+    college = models.CharField(max_length=100, null=True)
+    github = models.CharField(max_length=100, null=True)
+    tshirt = models.CharField(max_length=5, choices=tshirt_sizes, default='naked')
+    year_of_study = models.IntegerField(default=-1)
+    phone = models.CharField(max_length=10, null=True)
+    food = models.CharField(max_length=7, choices=food_choices, default='starve')
+    linkedin = models.CharField(max_length=100, null=True)
+    gender = models.CharField(max_length=10, choices=gender_choices, default='wm')
+    email = models.CharField(max_length=50, default='')
+    team = models.CharField(max_length=50, null=True)
+
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        permissions = [
+            ('checked_in', 'User completed check-in'),
+        ]
+
+
+@receiver(post_save, sender='auth.User')
+def create_model_from_csv(sender, instance, created, **kwargs):
+    if not created:
+        return
+
+    data = {"email": instance.email}
+
+    if instance.email in settings.REGISTRATION_DATA:
+        data = settings.REGISTRATION_DATA[instance.email]
+
+        permission = Permission.objects.get(codename='checked_in')
+        instance.user_permissions.add(permission)
+
+    UserConfig.objects.create(user=instance, **data)

@@ -1,3 +1,4 @@
+import json
 import os
 
 import dotenv
@@ -137,7 +138,7 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static' if DEBUG else '/var/www/static'
+STATIC_ROOT = BASE_DIR / 'staticfiles' if DEBUG else '/var/www/static'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
@@ -149,3 +150,5 @@ MEDIA_ROOT = BASE_DIR / 'media' if DEBUG else '/var/www/media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REGISTRATION_DATA = json.load(open(BASE_DIR / 'registration_data.json', 'r'))
