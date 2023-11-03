@@ -20,7 +20,11 @@
                                 {% endif %}
                             </div>
                         {% endif %}
-                        <img src="{{ swag.image.url }}" class="card-img-top card__image" alt="Swag Image">
+                        {% if swag.image %}
+                            <img src="{{ swag.image.url }}" class="card-img-top card__image" alt="Swag Image">
+                        {% else %}
+                            <img src="{% static 'swag.webp' %}" class="card-img-top card__image" alt="Swag Image">
+                        {% endif %}
                         <p class="card__text">{{ swag.description }}</p>
                     </div>
                 {% endfor %}
