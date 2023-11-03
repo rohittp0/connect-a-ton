@@ -8,7 +8,7 @@ admin.site.register(Question)
 @admin.register(UserConfig)
 class UserConfigAdmin(admin.ModelAdmin):
     list_filter = ('gender', 'food', 'tshirt')
-    list_display = ('name', 'team', 'college', 'email')
+    list_display = ('user', 'name', 'team', 'college', 'email')
     search_fields = ('name', 'team', 'college', 'email', 'user__username')
     readonly_fields = ('user',)
     exclude = ('other_answers', 'self_questions')
