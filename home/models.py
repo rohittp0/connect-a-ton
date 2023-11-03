@@ -52,6 +52,7 @@ class UserConfig(models.Model):
     other_answers = models.ManyToManyField(Answer, related_name='other_answers', through='UserAnswer')
 
     points = models.IntegerField(default=0)
+    checked_in = models.BooleanField(default=False)
 
     name = models.CharField(max_length=100, null=True)
     course = models.CharField(max_length=100, null=True)
@@ -59,7 +60,7 @@ class UserConfig(models.Model):
     github = models.CharField(max_length=100, null=True)
     tshirt = models.CharField(max_length=5, choices=tshirt_sizes, default='naked')
     year_of_study = models.IntegerField(default=-1)
-    phone = models.CharField(max_length=10, null=True)
+    phone = models.CharField(max_length=20, null=True)
     food = models.CharField(max_length=7, choices=food_choices, default='starve')
     linkedin = models.CharField(max_length=100, null=True)
     gender = models.CharField(max_length=10, choices=gender_choices, default='wm')
@@ -69,23 +70,16 @@ class UserConfig(models.Model):
     def __str__(self):
         return self.user.username
 
-    class Meta:
-        permissions = [
-            ('checked_in', 'User completed check-in'),
-        ]
-
 
 @receiver(post_save, sender='auth.User')
 def create_model_from_csv(sender, instance, created, **kwargs):
     if not created:
         return
 
-    data = {"email": instance.email}
+    data = {"email": instance.email, "name": instance.username}
 
     if instance.email in settings.REGISTRATION_DATA:
         data = settings.REGISTRATION_DATA[instance.email]
-
-        permission = Permission.objects.get(codename='checked_in')
-        instance.user_permissions.add(permission)
+        data["checked_in"] = True
 
     UserConfig.objects.create(user=instance, **data)
