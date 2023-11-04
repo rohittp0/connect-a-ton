@@ -1,10 +1,28 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from home.models import Question, Answer, UserConfig, UserAnswer
 
 admin.site.register(Question)
 admin.site.unregister(User)
+
+
+class CheckedInFilter(admin.SimpleListFilter):
+    title = 'Checked in status'
+    parameter_name = 'checked_in'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('1', 'Checked in'),
+            ('0', 'Not Checked in'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == '1':
+            return queryset.filter(userconfig__checked_in=True)
+        elif self.value() == '0':
+            return queryset.filter(Q(userconfig__checked_in=False) | Q(userconfig__checked_in__isnull=True))
 
 
 @admin.register(UserConfig)
@@ -37,5 +55,13 @@ class UserAnswerAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'checked_in')
     search_fields = ('username', 'email', 'first_name', 'last_name')
+    list_filter = ('is_staff', CheckedInFilter)
+
+    @staticmethod
+    def checked_in(obj):
+        try:
+            return UserConfig.objects.get(user=obj).checked_in
+        except UserConfig.DoesNotExist:
+            return False
