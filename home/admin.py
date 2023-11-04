@@ -28,7 +28,7 @@ class CheckedInFilter(admin.SimpleListFilter):
 @admin.register(UserConfig)
 class UserConfigAdmin(admin.ModelAdmin):
     list_filter = ('gender', 'food', 'tshirt', 'checked_in', 'user__is_staff')
-    list_display = ('user', 'name', 'team', 'college', 'email', 'checked_in')
+    list_display = ('user', 'name', 'team', 'college', 'email', 'checked_in', 'points')
     search_fields = ('name', 'team', 'college', 'email', 'user__username')
     readonly_fields = ('user',)
     exclude = ('other_answers', 'self_questions')
@@ -49,7 +49,8 @@ class AnswerAdmin(admin.ModelAdmin):
 
 @admin.register(UserAnswer)
 class UserAnswerAdmin(admin.ModelAdmin):
-    list_display = ('answer', 'answer_value', 'question_config')
+    list_display = ('answer', 'answer_value', 'question_config', 'is_correct')
+    list_filter = ('is_correct',)
     search_fields = ('answer__question__question_text', 'question_config__user__username')
 
 

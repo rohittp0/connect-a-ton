@@ -67,15 +67,11 @@ def answer_view(request):
 
         return redirect('home')
 
-    UserAnswer.objects.create(
+    UserAnswer.objects.get_or_create(
         answer_value=answer_value,
         answer=answer,
         question_config=config,
     )
-
-    if int(answer_value) == answer.answer:
-        config.points += 5
-        config.save()
 
     return redirect('home')
 

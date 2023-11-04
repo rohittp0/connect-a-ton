@@ -1,10 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-from django.conf import settings
 
 tshirt_sizes = (
     ('xs', 'Extra Small'),
@@ -43,13 +42,26 @@ class Answer(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='user')
 
     def __str__(self):
-        return self.question.options[self.answer]
+        return self.question.options[self.answer] if self.answer else ""
 
 
 class UserAnswer(models.Model):
     answer_value = models.IntegerField()
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     question_config = models.ForeignKey('UserConfig', on_delete=models.CASCADE)
+    is_correct = models.BooleanField(default=False)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if force_insert:
+            if self.answer_value == self.answer.answer:
+                self.is_correct = True
+                self.question_config.points += 5
+            else:
+                self.question_config.points -= 5
+
+            self.question_config.save()
+
+        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
 
 class UserConfig(models.Model):
