@@ -60,18 +60,18 @@ class UserConfig(models.Model):
     points = models.IntegerField(default=0)
     checked_in = models.BooleanField(default=False)
 
-    name = models.CharField(max_length=100, null=True)
-    course = models.CharField(max_length=100, null=True, blank=True)
-    college = models.CharField(max_length=100, null=True, blank=True)
-    github = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True)
+    course = models.CharField(max_length=200, null=True, blank=True)
+    college = models.CharField(max_length=200, null=True, blank=True)
+    github = models.CharField(max_length=200, null=True, blank=True)
     tshirt = models.CharField(max_length=5, choices=tshirt_sizes, default='naked')
     year_of_study = models.IntegerField(default=-1)
     phone = models.CharField(max_length=20, null=True)
     food = models.CharField(max_length=7, choices=food_choices, default='starve')
-    linkedin = models.CharField(max_length=100, null=True, blank=True)
+    linkedin = models.CharField(max_length=200, null=True, blank=True)
     gender = models.CharField(max_length=10, choices=gender_choices, default='wm')
-    email = models.CharField(max_length=50, default='')
-    team = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=100, default='')
+    team = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.user.username
