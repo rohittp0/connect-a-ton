@@ -33,6 +33,8 @@ def index(request):
 
     question = answer.question
     name = "you" if is_self else answer.user.first_name + " " + answer.user.last_name
+    team = get_object_or_404(UserConfig, user=answer.user).team if not is_self else None
+    team = team or "Organizer"
 
     context = {
         "question": question.question_text.replace("%USER%", name),
@@ -40,6 +42,7 @@ def index(request):
         "answer": answer.id,
         "is_self": is_self,
         "points": config.points,
+        "team": team,
     }
     return render(request, 'home/index.html', context=context)
 

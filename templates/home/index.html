@@ -14,6 +14,9 @@
     <div class="cards-pile mb-4">
         {% if answer %}
             <h5 class="card-title mb-3">{{ question }}</h5>
+            {% if not is_self %}
+                <h6 class="card-subtitle mb-3 text-muted">Team: {{ team }}</h6>
+            {% endif %}
             <form method="post" action="/answer/" class="p-2">
                 {% csrf_token %}
                 <input type="hidden" name="answer_id" value="{{ answer }}">
