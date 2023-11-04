@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 from home.models import Question, Answer, UserConfig, UserAnswer
 
 admin.site.register(Question)
+admin.site.unregister(User)
 
 
 @admin.register(UserConfig)
@@ -31,3 +33,9 @@ class AnswerAdmin(admin.ModelAdmin):
 class UserAnswerAdmin(admin.ModelAdmin):
     list_display = ('answer', 'answer_value', 'question_config')
     search_fields = ('answer__question__question_text', 'question_config__user__username')
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name')
+    search_fields = ('username', 'email', 'first_name', 'last_name')

@@ -82,10 +82,10 @@ def create_model_from_csv(sender, instance, created, **kwargs):
     if not created:
         return
 
-    data = {"email": instance.email, "name": instance.username}
+    data = {"email": instance.email.lower(), "name": instance.username}
 
-    if instance.email in settings.REGISTRATION_DATA:
-        data = settings.REGISTRATION_DATA[instance.email]
+    if data["email"] in settings.REGISTRATION_DATA:
+        data = settings.REGISTRATION_DATA[data["email"]]
         data["checked_in"] = True
 
     try:
