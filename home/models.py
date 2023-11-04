@@ -88,4 +88,7 @@ def create_model_from_csv(sender, instance, created, **kwargs):
         data = settings.REGISTRATION_DATA[instance.email]
         data["checked_in"] = True
 
-    UserConfig.objects.create(user=instance, **data)
+    try:
+        UserConfig.objects.create(user=instance, **data)
+    except:
+        UserConfig.objects.create(user=instance)
