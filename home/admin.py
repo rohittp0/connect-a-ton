@@ -49,8 +49,8 @@ class AnswerAdmin(admin.ModelAdmin):
 
 @admin.register(UserAnswer)
 class UserAnswerAdmin(admin.ModelAdmin):
-    list_display = ('answer', 'answer_value', 'question_config', 'is_correct')
-    list_filter = ('is_correct',)
+    list_display = ('answer', 'answer_value', 'question_config', 'is_correct', 'skipped')
+    list_filter = ('is_correct', 'skipped')
     search_fields = ('answer__question__question_text', 'question_config__user__username')
 
 
