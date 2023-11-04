@@ -50,10 +50,13 @@ class UserAnswer(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     question_config = models.ForeignKey('UserConfig', on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)
+    skipped = models.BooleanField(default=False)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if force_insert:
-            if self.answer_value == self.answer.answer:
+            if self.answer_value == -1:
+                self.skipped = True
+            elif self.answer_value == self.answer.answer:
                 self.is_correct = True
                 self.question_config.points += 5
             else:
