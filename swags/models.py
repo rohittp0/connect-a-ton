@@ -18,7 +18,7 @@ class SwagAward(models.Model):
 class Swag(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='swags', blank=True)
-    points = models.IntegerField(blank=True, null=True)
+    points = models.IntegerField()
     awarded = models.ManyToManyField('auth.User', through=SwagAward, related_name='awarded_swags')
     stock = models.IntegerField(default=0)
 

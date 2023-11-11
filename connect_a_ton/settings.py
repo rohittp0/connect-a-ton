@@ -6,6 +6,13 @@ from pathlib import Path
 
 dotenv.load_dotenv()
 
+# If required you can provide a registration_data.json ( see schema in docs ) and only allow pre-registered users to
+# play.
+PRE_REGISTRATION = False
+
+# If you are planning to give some swags to users based on their points enable this to add swags listing.
+SWAGS = False
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,9 +57,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
 
-    'home',
-    'swags',
+    'home'
 ]
+
+if SWAGS:
+    INSTALLED_APPS.append('swags')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -155,4 +164,4 @@ MEDIA_ROOT = BASE_DIR / 'media' if DEBUG else '/var/www/media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REGISTRATION_DATA = json.load(open(BASE_DIR / 'registration_data.json', 'r'))
+REGISTRATION_DATA = json.load(open(BASE_DIR / 'registration_data.json', 'r')) if PRE_REGISTRATION else {}
