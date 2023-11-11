@@ -48,7 +48,9 @@
         {% endif %}
     </div>
     <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-outline-primary mx-2" onclick="window.location.href='/swags/'">Swags</button>
+        {% if swags %}
+            <button class="btn btn-outline-primary mx-2" onclick="window.location.href='/swags/'">Swags</button>
+        {% endif %}
         <button class="btn btn-outline-primary mx-2" onclick="window.location.reload()">Refresh</button>
     </div>
 {% endblock content %}

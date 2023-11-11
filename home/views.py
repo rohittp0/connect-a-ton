@@ -1,5 +1,6 @@
 import random
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -43,6 +44,7 @@ def index(request):
         "is_self": is_self,
         "points": config.points,
         "team": team,
+        "swags": settings.SWAGS
     }
     return render(request, 'home/index.html', context=context)
 
